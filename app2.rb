@@ -1,7 +1,7 @@
 require 'bundler'
 Bundler.require
 
-
+require_relative 'lib/test'
 require_relative 'lib/player'
 
 
@@ -35,10 +35,10 @@ choice_action =""
 
 while !player.death
   while !(choice_action == 1 or choice_action == 2 or choice_action == 3)
-    gets.chomp
     puts "-----------------------"
     puts " au tour de #{player.name}"
     puts "-----------------------"
+    gets.chomp
     puts "1-attaquer"
     puts "2-se soigner"
     puts "3-chercher une arme"
@@ -63,9 +63,8 @@ while !player.death
       if choice_defender.death
         bots.delete(choice_defender)
       else
-        gets.chomp
         choice_defender.show_status
-        sleep(1)
+        gets.chomp
       end
     when 2
       puts " "
@@ -82,17 +81,16 @@ while !player.death
     puts "#{player.name} a gagné"
     break
   end
-  gets.chomp
   puts "-----------------------"
   puts "au tour bots d'attaquer"
   puts "-----------------------"
+  gets.chomp
   bots.each do |bot|
     bot.hit_someone(player)
     sleep(0.2)
   end
-  gets.chomp
   player.show_status
-  sleep(1)
+  gets.chomp
   choice_action = ""
   # system "clear"
 end

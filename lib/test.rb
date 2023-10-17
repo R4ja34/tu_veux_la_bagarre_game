@@ -1,60 +1,68 @@
-require_relative "player.rb"
+require_relative 'player'
 
 
-player1 = Player.new("raja", 20)
-player2 = Player.new("haingo", 20)
-player0 = HumanPlayer.new("raja", 20)
+class Game
+  attr_accessor :human_player, :bots
 
+  def initialize(human_name, num_bots = 4)
+    @human_player = HumanPlayer.new(human_name)
+    @bots = []
 
-  all_player = Player.all
-while true
-  player1.show_status
-  player1.get_hit_by(player2)
-  player1.show_status
-  puts " "
-  if player1.death
-    break
+    num_bots.times do |i|
+      @bots << Player.new("bot#{i + 1}")
+    end
   end
-  player2.show_status
-  player2.get_hit_by(player1)
-  player2.show_status
-  puts " "
-  if player2.death
-    break
+
+#################################################################################
+#                                   OBJECT METHOD
+#################################################################################
+  
+  def attack_bot
+    puts "choix ennemie"
+    @bots.each.with_index do |bot, index|
+      puts "choix #{index+1} : attaquer #{bot.name} point de vie = #{bot.health}"
+    end
+    print "vous attaquer : le choix "
+    i = gets.chomp.to_i
+    while !(1..@bots.length).include?(i)
+      print "veuillez entrer choix valide : "
+      i = gets.chomp.to_i
+    end
+    choice_defender = @bots[i-1]
+    @human_player.hit_someone(choice_defender)
+    if choice_defender.death
+      @bots.delete(choice_defender)
+    else
+      gets.chomp
+      choice_defender.show_status
+    end
   end
+
+  def human_player_choice(choice)
+    while !(choice == 1 or choice == 2 or choice == 3)
+      gets.chomp
+      puts "-----------------------"
+      puts " au tour de #{@human_player.name}"
+      puts "-----------------------"
+      puts "1-attaquer"
+      puts "2-se soigner"
+      puts "3-chercher une arme"
+      print "choix action : "
+      choice = gets.chomp.to_i
+  
+      case choice
+      when 1
+        attack_bot()
+      when 2
+        puts " "
+        @human_player.get_health
+      when 3
+        puts " "
+        @human_player.get_new_weapon
+      else 
+        print "choix incorrecte entrer bonne valeur : "
+      end
+    end
+  end
+
 end
-
-# all_player.each do 
-
-# Imprimez 1 à 100 pour cent en place dans la console en utilisant la technique de "sortie dynamique"
-# Print 1 to 100 percent in place in the console using "dynamic output" technique
-1.upto(100) do |i|
-  printf("\rPercentage: %d%", i)
-  sleep(0.1)
-end
-
-while true
-  puts "Voici l'état des joueurs :"
-  player2.show_status
-  player1.show_status
-  puts " "
-
-  puts 
-  puts "#{"-"*10}phase de combat#{"-"*10}"
-  player1.get_hit_by(player2)
-  if player2.death
-    break
-  end
-  player2.get_hit_by(player1)
-  if player2.death
-    break
-  end
-end
-
-
-
-Elle va commencer par lancer un "dé" dont le résultat sera compris entre 1 et 6 (tu sais faire ça maintenant non?).
-Ce lancé de dé sera égal au niveau de la nouvelle arme trouvée. Annonce le résultat de la recherche à l'utilisateur en affichant un message du genre "Tu as trouvé une arme de niveau XXX".
-Maintenant, cherche à savoir si ça vaut le coup pour le joueur Human Player de la garder… Utilise un if pour comparer le niveau de cette nouvelle arme avec celle qu'il possède déjà (@weapon_level).
-Si l'arme trouvée est d'un niveau strictement supérieur, il la garde. Son @weapon_level prend alors la valeur de la nouvelle arme et tu affiches un message du genre "Youhou ! elle est meilleure que ton arme actuelle : tu la prends."
-Si l'arme trouvée est égale ou moins bien que son arme actuelle, tu ne changes rien et ne fais qu'afficher un petit "M@*#$... elle n'est pas mieux que ton arme actuelle..."
