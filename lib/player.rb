@@ -9,17 +9,18 @@ class Player
     @health = health
     @@all_users << self
   end
-##########################################################
-#           CLASS METHOD
-##########################################################
 
-  def self.all # pourquoi self.all peut etre methode de classe
+#################################################################################
+#                                   class METHOD
+#################################################################################
+  
+  def self.all
     @@all_users
   end
 
-##########################################################
-#           OBJECT METHOD
-##########################################################
+#################################################################################
+#                                   OBJECT METHOD
+#################################################################################
   
   def show_status
     puts "#{@name} a #{@health}point de vie"
@@ -57,6 +58,10 @@ class HumanPlayer < Player
     super(name, health)
   end
 
+#######################################################################################
+#                                    OBJECT METHOD
+#######################################################################################
+
   def show_status
     puts "#{@name} a #{@health} point de vie et une arme de niveau #{@weapon_level}"
   end
@@ -64,7 +69,6 @@ class HumanPlayer < Player
   def hit
     return rand(1..10) * @weapon_level
   end
-
 
   def get_new_weapon
     new_weapon = rand(1..10)

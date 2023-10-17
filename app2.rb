@@ -8,7 +8,7 @@ require_relative 'lib/player'
 puts "---------------------------------------------------"
 puts "|                                                  |"
 puts "|             welcome in the game                  |"
-puts "|                                                  |"
+puts "| Le but du jeu est d'être le dernier survivant !  |"
 puts "---------------------------------------------------"
 
 print "quel est ton nom de hero : "
@@ -35,16 +35,13 @@ choice_action =""
 
 while !player.death
   while !(choice_action == 1 or choice_action == 2 or choice_action == 3)
-    puts " "
+    gets.chomp
     puts "-----------------------"
     puts " au tour de #{player.name}"
     puts "-----------------------"
     puts "1-attaquer"
-    sleep(0.1)
     puts "2-se soigner"
-    sleep(0.1)
     puts "3-chercher une arme"
-    sleep(0.1)
     print "choix action : "
     choice_action = gets.chomp.to_i
 
@@ -52,7 +49,7 @@ while !player.death
     when 1
       puts "choix ennemie"
       bots.each.with_index do |bot, index|
-        puts "choix #{index+1} : attaquer #{bot.name}"
+        puts "choix #{index+1} : attaquer #{bot.name} point de vie = #{bot.health}"
       end
       
       print "vous attaquer : le choix "
@@ -66,7 +63,7 @@ while !player.death
       if choice_defender.death
         bots.delete(choice_defender)
       else
-        puts " "
+        gets.chomp
         choice_defender.show_status
         sleep(1)
       end
@@ -85,6 +82,7 @@ while !player.death
     puts "#{player.name} a gagné"
     break
   end
+  gets.chomp
   puts "-----------------------"
   puts "au tour bots d'attaquer"
   puts "-----------------------"
@@ -92,7 +90,7 @@ while !player.death
     bot.hit_someone(player)
     sleep(0.2)
   end
-  puts " "
+  gets.chomp
   player.show_status
   sleep(1)
   choice_action = ""
