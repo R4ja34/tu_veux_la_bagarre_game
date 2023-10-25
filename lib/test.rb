@@ -1,3 +1,4 @@
+require 'pry'
 require_relative 'player'
 
 
@@ -55,14 +56,14 @@ class Game
         attack_bot()
       when 2
         puts " "
-        @human_player.get_health
+        get_health()
       when 3
         puts " "
-        @human_player.get_new_weapon
+        get_new_weapon()
       else 
         print "choix incorrecte entrer bonne valeur : "
       end
     end
   end
-
 end
+
